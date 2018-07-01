@@ -19,9 +19,9 @@ namespace UI.Api
             _endpointUrl = endpointUrl;
         }
 
-        public static async Task<IReadOnlyList<StudentDto>> GetAll()
+        public static async Task<IReadOnlyList<StudentDto>> GetAll(string enrolledIn, string numberOfCourses)
         {
-            Result<List<StudentDto>> result = await SendRequest<List<StudentDto>>("/", HttpMethod.Get).ConfigureAwait(false);
+            Result<List<StudentDto>> result = await SendRequest<List<StudentDto>>($"?enrolled={enrolledIn}&number={numberOfCourses}", HttpMethod.Get).ConfigureAwait(false);
             return result.Value;
         }
 

@@ -12,7 +12,7 @@ namespace Logic.Students
             Map(x => x.Name);
             Map(x => x.Email);
 
-            HasMany<Enrollment>(Reveal.Member<Student>("_enrollments")).Access.Field().Inverse().Cascade.AllDeleteOrphan();
+            HasMany<Enrollment>(x => x.Enrollments).Access.CamelCaseField(Prefix.Underscore).Inverse().Cascade.AllDeleteOrphan();
             HasMany(x => x.Disenrollments).Access.CamelCaseField(Prefix.Underscore).Inverse().Cascade.AllDeleteOrphan();
         }
     }

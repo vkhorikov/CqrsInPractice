@@ -6,8 +6,8 @@ namespace UI.Students
 {
     public sealed class StudentViewModel : ViewModel
     {
-        public string[] Courses { get; } = { "", "Calculus", "Chemistry", "Composition", "Literature", "Trigonometry", "Microeconomics", "Macroeconomics" };
-        public string[] Grades { get; } = { "", "A", "B", "C", "D", "F" };
+        public static string[] Courses { get; } = { "", "Calculus", "Chemistry", "Composition", "Literature", "Trigonometry", "Microeconomics", "Macroeconomics" };
+        public static string[] Grades { get; } = { "", "A", "B", "C", "D", "F" };
 
         private readonly bool _isNew;
         public StudentDto Student { get; }
@@ -15,7 +15,7 @@ namespace UI.Students
         public Command OkCommand { get; }
         public Command CancelCommand { get; }
 
-        public override string Caption => (_isNew ? "Add" : "Edit") + "Student";
+        public override string Caption => (_isNew ? "Add" : "Edit") + " Student";
         public override double Height => 450;
 
         public StudentViewModel(StudentDto student = null)

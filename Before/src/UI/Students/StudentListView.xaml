@@ -5,10 +5,17 @@
 
         <DockPanel>
             <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left" Orientation="Horizontal">
+                <TextBlock FontSize="18" Padding="10" VerticalAlignment="Center" Text="Enrolled in:" />
+                <ComboBox ItemsSource="{Binding Path=Courses}" SelectedValue="{Binding Path=SelectedCourse}" Padding="5" Margin="10" FontSize="18" Width="170" />
+                <TextBlock FontSize="18" Padding="10" VerticalAlignment="Center" Text="Number of courses:" Margin="0 2 0 0" />
+                <ComboBox ItemsSource="{Binding Path=NumberOfCourses}" SelectedValue="{Binding Path=SelectedNumberOfCourses}" Padding="5" Margin="10" FontSize="18" Width="40" />
+                <Button Command="{Binding SearchCommand}" Content="Search" Margin="10" Padding="5" FontSize="18" />
+            </StackPanel>
+
+            <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left" Orientation="Horizontal">
                 <Button Command="{Binding CreateStudentCommand}" Content="Create Student" Margin="10 0 10 15" Padding="5" FontSize="18" />
                 <Button Command="{Binding UpdateStudentCommand}" CommandParameter="{Binding ElementName=grdStudents, Path=SelectedValue}" Content="Update Student" Margin="10 0 10 15" Padding="5" FontSize="18" />
                 <Button Command="{Binding DeleteStudentCommand}" CommandParameter="{Binding ElementName=grdStudents, Path=SelectedValue}" Content="Delete Student" Margin="10 0 10 15" Padding="5" FontSize="18" />
-                <Button Command="{Binding RefreshCommand}" Content="Refresh" Margin="10 0 10 15" Padding="5" FontSize="18" />
             </StackPanel>
 
             <DataGrid x:Name="grdStudents" ItemsSource="{Binding Path=Students}" IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single" FontSize="15">

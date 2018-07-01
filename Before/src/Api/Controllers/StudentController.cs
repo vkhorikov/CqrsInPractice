@@ -11,20 +11,21 @@ namespace Api.Controllers
     [Route("api/students")]
     public sealed class StudentController : BaseController
     {
+        private readonly UnitOfWork _unitOfWork;
         private readonly StudentRepository _studentRepository;
         private readonly CourseRepository _courseRepository;
 
         public StudentController(UnitOfWork unitOfWork)
-            : base(unitOfWork)
         {
+            _unitOfWork = unitOfWork;
             _studentRepository = new StudentRepository(unitOfWork);
             _courseRepository = new CourseRepository(unitOfWork);
         }
 
         [HttpGet]
-        public IActionResult GetList()
+        public IActionResult GetList(string enrolled, int? number)
         {
-            IReadOnlyList<Student> students = _studentRepository.GetList();
+            IReadOnlyList<Student> students = _studentRepository.GetList(enrolled, number);
             List<StudentDto> dtos = students.Select(x => ConvertToDto(x)).ToList();
             return Ok(dtos);
         }
@@ -63,6 +64,7 @@ namespace Api.Controllers
             }
 
             _studentRepository.Save(student);
+            _unitOfWork.Commit();
 
             return Ok();
         }
@@ -75,6 +77,7 @@ namespace Api.Controllers
                 return Error($"No student found for Id {id}");
 
             _studentRepository.Delete(student);
+            _unitOfWork.Commit();
 
             return Ok();
         }
@@ -151,6 +154,8 @@ namespace Api.Controllers
                     enrollment.Update(course, Enum.Parse<Grade>(dto.Course2Grade));
                 }
             }
+
+            _unitOfWork.Commit();
 
             return Ok();
         }

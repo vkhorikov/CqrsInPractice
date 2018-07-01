@@ -9,6 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "src\Logic\Logic.cs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "src\UI\UI.csproj", "{51B2B4EF-E9FE-4700-B8B8-6569D9B8BB22}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{937E5D49-13F7-4E72-8127-0A916CA9C894}"
+	ProjectSection(SolutionItems) = preProject
+		DatabaseInitial.sql = DatabaseInitial.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -18,9 +18,23 @@ namespace Logic.Students
             return _unitOfWork.Get<Student>(id);
         }
 
-        public IReadOnlyList<Student> GetList()
+        public IReadOnlyList<Student> GetList(string enrolledIn, int? numberOfCourses)
         {
-            return _unitOfWork.Query<Student>().ToList();
+            IQueryable<Student> query = _unitOfWork.Query<Student>();
+
+            if (!string.IsNullOrWhiteSpace(enrolledIn))
+            {
+                query = query.Where(x => x.Enrollments.Any(e => e.Course.Name == enrolledIn));
+            }
+
+            List<Student> result = query.ToList();
+
+            if (numberOfCourses != null)
+            {
+                result = result.Where(x => x.Enrollments.Count == numberOfCourses).ToList();
+            }
+
+            return result;
         }
 
         public void Save(Student student)

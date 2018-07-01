@@ -10,6 +10,7 @@ namespace Logic.Students
         public virtual string Email { get; set; }
 
         private readonly IList<Enrollment> _enrollments = new List<Enrollment>();
+        public virtual IReadOnlyList<Enrollment> Enrollments => _enrollments.ToList();
         public virtual Enrollment FirstEnrollment => GetEnrollment(0);
         public virtual Enrollment SecondEnrollment => GetEnrollment(1);
 

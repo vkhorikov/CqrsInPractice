@@ -6,7 +6,13 @@ namespace UI.Students
 {
     public sealed class StudentListViewModel : ViewModel
     {
-        public Command RefreshCommand { get; }
+        public static string[] Courses { get; } = { "", "Calculus", "Chemistry", "Composition", "Literature", "Trigonometry", "Microeconomics", "Macroeconomics" };
+        public static string[] NumberOfCourses { get; } = { "", "0", "1", "2" };
+
+        public string SelectedCourse { get; set; } = "";
+        public string SelectedNumberOfCourses { get; set; } = "";
+
+        public Command SearchCommand { get; }
         public Command CreateStudentCommand { get; }
         public Command<StudentDto> UpdateStudentCommand { get; }
         public Command<StudentDto> DeleteStudentCommand { get; }
@@ -14,19 +20,19 @@ namespace UI.Students
 
         public StudentListViewModel()
         {
-            RefreshCommand = new Command(Refresh);
+            SearchCommand = new Command(Search);
             CreateStudentCommand = new Command(CreateStudent);
             UpdateStudentCommand = new Command<StudentDto>(x => x != null, UpdateStudent);
             DeleteStudentCommand = new Command<StudentDto>(x => x != null, DeleteStudent);
 
-            Refresh();
+            Search();
         }
 
         private void DeleteStudent(StudentDto dto)
         {
             ApiClient.Delete(dto.Id).ConfigureAwait(false).GetAwaiter().GetResult();
 
-            Refresh();
+            Search();
         }
 
         private void UpdateStudent(StudentDto dto)
@@ -34,7 +40,7 @@ namespace UI.Students
             var viewModel = new StudentViewModel(dto);
             _dialogService.ShowDialog(viewModel);
 
-            Refresh();
+            Search();
         }
 
         private void CreateStudent()
@@ -42,12 +48,12 @@ namespace UI.Students
             var viewModel = new StudentViewModel();
             _dialogService.ShowDialog(viewModel);
 
-            Refresh();
+            Search();
         }
 
-        private void Refresh()
+        private void Search()
         {
-            Students = ApiClient.GetAll().ConfigureAwait(false).GetAwaiter().GetResult();
+            Students = ApiClient.GetAll(SelectedCourse, SelectedNumberOfCourses).ConfigureAwait(false).GetAwaiter().GetResult();
 
             Notify(nameof(Students));
         }
