@@ -120,8 +120,7 @@ namespace Api.Controllers
                 else
                 {
                     // Student transfers
-                    Enrollment enrollment = firstEnrollment;
-                    enrollment.Update(course, Enum.Parse<Grade>(dto.Course1Grade));
+                    firstEnrollment.Update(course, Enum.Parse<Grade>(dto.Course1Grade));
                 }
             }
 
@@ -150,8 +149,7 @@ namespace Api.Controllers
                 else
                 {
                     // Student transfers
-                    Enrollment enrollment = secondEnrollment;
-                    enrollment.Update(course, Enum.Parse<Grade>(dto.Course2Grade));
+                    secondEnrollment.Update(course, Enum.Parse<Grade>(dto.Course2Grade));
                 }
             }
 
