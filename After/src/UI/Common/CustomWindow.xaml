@@ -1,0 +1,17 @@
+﻿<Window x:Class="UI.Common.CustomWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:common="clr-namespace:UI.Common"
+        xmlns:common1="clr-namespace:UI.Common"
+        Title="{Binding Path=Caption}"
+        common1:DialogCloser.DialogResult="{Binding Path=DialogResult}"
+        WindowStartupLocation="CenterOwner"
+        Icon="{StaticResource imgApplicationIcon}">
+    <Grid>
+        <Grid.Resources>
+            <common1:MainDataTemplateSelector x:Key="selector" />
+        </Grid.Resources>
+
+        <ContentPresenter ContentTemplateSelector="{StaticResource selector}" Content="{Binding}" />
+    </Grid>
+</Window>

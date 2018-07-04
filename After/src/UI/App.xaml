@@ -1,0 +1,19 @@
+﻿<Application x:Class="UI.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="Common/MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Common/Common.xaml" />
+                <ResourceDictionary Source="Students/StudentListView.xaml" />
+                <ResourceDictionary Source="Students/EnrollView.xaml" />
+                <ResourceDictionary Source="Students/RegisterStudentView.xaml" />
+                <ResourceDictionary Source="Students/DisenrollView.xaml" />
+                <ResourceDictionary Source="Students/TransferView.xaml" />
+                <ResourceDictionary Source="Students/EditPersonalInfo.xaml" />
+                <ResourceDictionary Source="Students/RegisterStudentView.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

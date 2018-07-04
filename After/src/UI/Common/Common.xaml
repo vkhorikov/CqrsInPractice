@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:common="clr-namespace:UI.Common">
+
+    <ImageSource x:Key="imgApplicationIcon">..\Images\Icon.png</ImageSource>
+    <common:InvertedBooleanConverter x:Key="invertedBooleanConverter" />
+    <common:BooleanToYesConverter x:Key="booleanToYesConverter" />
+    <common:EmptyStringToBoolConverter x:Key="emptyStringToBoolConverter" />
+    <common:InvertedEmptyStringToBoolConverter x:Key="invertedEmptyStringToBoolConverter" />
+
+    <Style TargetType="DataGridCell">
+        <Setter Property="TextBlock.TextAlignment" Value="Center" />
+        <Setter Property="Padding" Value="3" />
+    </Style>
+
+</ResourceDictionary>
