@@ -72,11 +72,10 @@ namespace UI.Api
 
             HttpResponseMessage message = await _client.SendAsync(request).ConfigureAwait(false);
             string response = await message.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var envelope = JsonConvert.DeserializeObject<Envelope<T>>(response);
 
             if (message.StatusCode == HttpStatusCode.InternalServerError)
-                throw new Exception(response);
-
-            var envelope = JsonConvert.DeserializeObject<Envelope<T>>(response);
+                throw new Exception(envelope.ErrorMessage);
 
             if (!message.IsSuccessStatusCode)
                 return Result.Fail<T>(envelope.ErrorMessage);
