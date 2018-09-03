@@ -1,4 +1,5 @@
 ﻿using Api.Utils;
+using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -18,6 +19,11 @@ namespace Api.Controllers
         protected IActionResult Error(string errorMessage)
         {
             return BadRequest(Envelope.Error(errorMessage));
+        }
+
+        protected IActionResult FromResult(Result result)
+        {
+            return result.IsSuccess ? Ok() : Error(result.Error);
         }
     }
 }
