@@ -4,7 +4,7 @@ using NHibernate;
 
 namespace Logic.Utils
 {
-    public class UnitOfWork
+    public sealed class UnitOfWork
     {
         private readonly ISession _session;
         private readonly ITransaction _transaction;
@@ -52,11 +52,6 @@ namespace Logic.Utils
         public IQueryable<T> Query<T>()
         {
             return _session.Query<T>();
-        }
-
-        public ISQLQuery CreateSQLQuery(string q)
-        {
-            return _session.CreateSQLQuery(q);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CSharpFunctionalExtensions;
+using Logic.Decorators;
 using Logic.Dtos;
 using Logic.Utils;
 
@@ -87,18 +88,21 @@ namespace Logic.Students
         }
     }
 
+    [DatabaseRetry]
+    [AuditLog]
     public sealed class EditPersonalInfoCommandHandler : ICommandHandler<EditPersonalInfoCommand>
     {
-        private readonly UnitOfWork _unitOfWork;
+        private readonly SessionFactory _sessionFactory;
 
-        public EditPersonalInfoCommandHandler(UnitOfWork unitOfWork)
+        public EditPersonalInfoCommandHandler(SessionFactory sessionFactory)
         {
-            _unitOfWork = unitOfWork;
+            _sessionFactory = sessionFactory;
         }
 
         public Result Handle(EditPersonalInfoCommand command)
         {
-            var repository = new StudentRepository(_unitOfWork);
+            var unitOfWork = new UnitOfWork(_sessionFactory);
+            var repository = new StudentRepository(unitOfWork);
             Student student = repository.GetById(command.Id);
 
             if (student == null)
@@ -107,7 +111,7 @@ namespace Logic.Students
             student.Name = command.Name;
             student.Email = command.Email;
 
-            _unitOfWork.Commit();
+            unitOfWork.Commit();
 
             return Result.Ok();
         }
@@ -133,6 +137,7 @@ namespace Logic.Students
         }
     }
 
+    [AuditLog]
     public sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand>
     {
         private readonly UnitOfWork _unitOfWork;
