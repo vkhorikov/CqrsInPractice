@@ -14,7 +14,7 @@ namespace Logic.Utils
     {
         private readonly ISessionFactory _factory;
 
-        public SessionFactory(string connectionString)
+        public SessionFactory(ConnectionString connectionString)
         {
             _factory = BuildSessionFactory(connectionString);
         }
@@ -24,10 +24,10 @@ namespace Logic.Utils
             return _factory.OpenSession();
         }
 
-        private static ISessionFactory BuildSessionFactory(string connectionString)
+        private static ISessionFactory BuildSessionFactory(ConnectionString connectionString)
         {
             FluentConfiguration configuration = Fluently.Configure()
-                .Database(MsSqlConfiguration.MsSql2012.ConnectionString(connectionString))
+                .Database(MsSqlConfiguration.MsSql2012.ConnectionString(connectionString.Value))
                 .Mappings(m => m.FluentMappings
                     .AddFromAssembly(Assembly.GetExecutingAssembly())
                     .Conventions.Add(

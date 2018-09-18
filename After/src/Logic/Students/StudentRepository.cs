@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Logic.Utils;
 
 namespace Logic.Students
@@ -16,25 +15,6 @@ namespace Logic.Students
         public Student GetById(long id)
         {
             return _unitOfWork.Get<Student>(id);
-        }
-
-        public IReadOnlyList<Student> GetList(string enrolledIn, int? numberOfCourses)
-        {
-            IQueryable<Student> query = _unitOfWork.Query<Student>();
-
-            if (!string.IsNullOrWhiteSpace(enrolledIn))
-            {
-                query = query.Where(x => x.Enrollments.Any(e => e.Course.Name == enrolledIn));
-            }
-
-            List<Student> result = query.ToList();
-
-            if (numberOfCourses != null)
-            {
-                result = result.Where(x => x.Enrollments.Count == numberOfCourses).ToList();
-            }
-
-            return result;
         }
 
         public void Save(Student student)

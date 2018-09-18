@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CSharpFunctionalExtensions;
+using Logic.AppServices;
 using Logic.Dtos;
 using Logic.Students;
 using Microsoft.AspNetCore.Mvc;
