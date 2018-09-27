@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{937E5D49-13F7-4E72-8127-0A916CA9C894}"
 	ProjectSection(SolutionItems) = preProject
 		DatabaseInitial.sql = DatabaseInitial.sql
+		DatabaseReads.sql = DatabaseReads.sql
 	EndProjectSection
 EndProject
 Global
