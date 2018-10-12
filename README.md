@@ -1,7 +1,7 @@
 Welcome to CQRS in Practice
 =====================
 
-This is the source code for my Pluralsight course CQRS in Practice (link is coming soon)
+This is the source code for my Pluralsight course [CQRS in Practice][L1]
 
 How to Get Started
 --------------
@@ -10,5 +10,5 @@ There are 2 versions of the source code: Before and After. The Before version co
 
 In order to run the application, you need to create a database, and change the connection string in appsettings.json.
 
-[L2]: DBCreationScript.txt
+[L1]: https://www.pluralsight.com/courses/cqrs-in-practice
 
