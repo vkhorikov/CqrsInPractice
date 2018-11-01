@@ -1,12 +1,16 @@
-﻿namespace Logic.Students
+﻿using CSharpFunctionalExtensions;
+
+namespace Logic.Students
 {
     public interface ICommand
     {
     }
 
-    public interface IQueryHandler<TQuery, TResult>
-        where TQuery : IQuery<TResult>
+    public interface ICommandHandler<TCommand>
+        where TCommand : ICommand
     {
-        TResult Handle(TQuery query);
+        Result Handle(TCommand command);
     }
+
+
 }
