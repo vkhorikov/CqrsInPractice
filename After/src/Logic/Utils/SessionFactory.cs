@@ -33,7 +33,7 @@ namespace Logic.Utils
                     .Conventions.Add(
                         ForeignKey.EndsWith("ID"),
                         ConventionBuilder.Property.When(criteria => criteria.Expect(x => x.Nullable, Is.Not.Set), x => x.Not.Nullable()))
-                    .Conventions.Add<OtherConversions>()
+                    .Conventions.Add<OtherConventions>()
                     .Conventions.Add<TableNameConvention>()
                     .Conventions.Add<HiLoConvention>()
                 );
@@ -41,7 +41,7 @@ namespace Logic.Utils
             return configuration.BuildSessionFactory();
         }
 
-        private class OtherConversions : IHasManyConvention, IReferenceConvention
+        private class OtherConventions : IHasManyConvention, IReferenceConvention
         {
             public void Apply(IOneToManyCollectionInstance instance)
             {
