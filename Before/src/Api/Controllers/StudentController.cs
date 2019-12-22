@@ -27,6 +27,7 @@ namespace Api.Controllers
         {
             IReadOnlyList<Student> students = _studentRepository.GetList(enrolled, number);
             List<StudentDto> dtos = students.Select(x => ConvertToDto(x)).ToList();
+            _unitOfWork.Commit();
             return Ok(dtos);
         }
 
