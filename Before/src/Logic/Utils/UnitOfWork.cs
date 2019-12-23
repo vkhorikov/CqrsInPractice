@@ -1,14 +1,16 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Linq;
 using NHibernate;
 
 namespace Logic.Utils
 {
-    public class UnitOfWork
+    public class UnitOfWork : IDisposable
     {
         private readonly ISession _session;
         private readonly ITransaction _transaction;
         private bool _isAlive = true;
+        private bool _isCommitted;
 
         public UnitOfWork(SessionFactory sessionFactory)
         {
@@ -16,21 +18,33 @@ namespace Logic.Utils
             _transaction = _session.BeginTransaction(IsolationLevel.ReadCommitted);
         }
 
+        public void Dispose()
+        {
+            if (!_isAlive)
+                return;
+
+            _isAlive = false;
+
+            try
+            {
+                if (_isCommitted)
+                {
+                    _transaction.Commit();
+                }
+            }
+            finally
+            {
+                _transaction.Dispose();
+                _session.Dispose();
+            }
+        }
+
         public void Commit()
         {
             if (!_isAlive)
                 return;
 
-            try
-            {
-                _transaction.Commit();
-            }
-            finally
-            {
-                _isAlive = false;
-                _transaction.Dispose();
-                _session.Dispose();
-            }
+            _isCommitted = true;
         }
 
         internal T Get<T>(long id)
