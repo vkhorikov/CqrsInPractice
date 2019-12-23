@@ -1,76 +1,76 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using CSharpFunctionalExtensions;
-using Newtonsoft.Json;
+using System.Data;
+using System.Linq;
+using NHibernate;
 
-namespace UI.Api
+namespace Logic.Utils
 {
-    public static class ApiClient
+    public class UnitOfWork : IDisposable
     {
-        private static readonly HttpClient _client = new HttpClient();
-        private static string _endpointUrl;
+        private readonly ISession _session;
+        private readonly ITransaction _transaction;
+        private bool _isAlive = true;
+        private bool _isCommitted;
 
-        public static void Init(string endpointUrl)
+        public UnitOfWork(SessionFactory sessionFactory)
         {
-            _endpointUrl = endpointUrl;
+            _session = sessionFactory.OpenSession();
+            _transaction = _session.BeginTransaction(IsolationLevel.ReadCommitted);
         }
 
-        public static async Task<IReadOnlyList<StudentDto>> GetAll(string enrolledIn, string numberOfCourses)
+        public void Dispose()
         {
-            Result<List<StudentDto>> result = await SendRequest<List<StudentDto>>($"?enrolled={enrolledIn}&number={numberOfCourses}", HttpMethod.Get).ConfigureAwait(false);
-            return result.Value;
-        }
+            if (!_isAlive)
+                return;
 
-        public static async Task<Result> Create(StudentDto dto)
-        {
-            Result result = await SendRequest<string>("/", HttpMethod.Post, dto).ConfigureAwait(false);
-            return result;
-        }
+            _isAlive = false;
 
-        public static async Task<Result> Update(StudentDto dto)
-        {
-            Result result = await SendRequest<string>("/" + dto.Id, HttpMethod.Put, dto).ConfigureAwait(false);
-            return result;
-        }
-
-        public static async Task<Result> Delete(long id)
-        {
-            Result result = await SendRequest<string>("/" + id, HttpMethod.Delete).ConfigureAwait(false);
-            return result;
-        }
-
-        private static async Task<Result<T>> SendRequest<T>(string url, HttpMethod method, object content = null)
-             where T : class
-        {
-            var request = new HttpRequestMessage(method, $"{_endpointUrl}{url}");
-            if (content != null)
+            try
             {
-                request.Content = new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
+                if (_isCommitted)
+                {
+                    _transaction.Commit();
+                }
             }
-
-            HttpResponseMessage message = await _client.SendAsync(request).ConfigureAwait(false);
-            string response = await message.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-            if (message.StatusCode == HttpStatusCode.InternalServerError)
-                throw new Exception(response);
-
-            var envelope = JsonConvert.DeserializeObject<Envelope<T>>(response);
-
-            if (!message.IsSuccessStatusCode)
-                return Result.Fail<T>(envelope.ErrorMessage);
-
-            T result = envelope.Result;
-
-            if (result == null && typeof(T) == typeof(string))
+            finally
             {
-                result = string.Empty as T;
+                _transaction.Dispose();
+                _session.Dispose();
             }
+        }
 
-            return Result.Ok(result);
+        public void Commit()
+        {
+            if (!_isAlive)
+                return;
+
+            _isCommitted = true;
+        }
+
+        internal T Get<T>(long id)
+            where T : class
+        {
+            return _session.Get<T>(id);
+        }
+
+        internal void SaveOrUpdate<T>(T entity)
+        {
+            _session.SaveOrUpdate(entity);
+        }
+
+        internal void Delete<T>(T entity)
+        {
+            _session.Delete(entity);
+        }
+
+        public IQueryable<T> Query<T>()
+        {
+            return _session.Query<T>();
+        }
+
+        public ISQLQuery CreateSQLQuery(string q)
+        {
+            return _session.CreateSQLQuery(q);
         }
     }
 }
