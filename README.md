@@ -10,5 +10,5 @@ There are 2 versions of the source code: Before and After. The Before version co
 
 In order to run the application, you need to create a database, and change the connection string in appsettings.json.
 
-[L1]: https://www.pluralsight.com/courses/cqrs-in-practice
+[L1]: https://enterprisecraftsmanship.com/ps-cqrs
 
