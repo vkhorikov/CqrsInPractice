@@ -21,25 +21,25 @@ namespace UI.Api
 
         public static async Task<IReadOnlyList<StudentDto>> GetAll(string enrolledIn, string numberOfCourses)
         {
-            Result<List<StudentDto>> result = await SendRequest<List<StudentDto>>($"?enrolled={enrolledIn}&number={numberOfCourses}", HttpMethod.Get).ConfigureAwait(false);
+            var result = await SendRequest<List<StudentDto>>($"?enrolled={enrolledIn}&number={numberOfCourses}", HttpMethod.Get).ConfigureAwait(false);
             return result.Value;
         }
 
         public static async Task<Result> Create(StudentDto dto)
         {
-            Result result = await SendRequest<string>("/", HttpMethod.Post, dto).ConfigureAwait(false);
+            var result = await SendRequest<string>("/", HttpMethod.Post, dto).ConfigureAwait(false);
             return result;
         }
 
         public static async Task<Result> Update(StudentDto dto)
         {
-            Result result = await SendRequest<string>("/" + dto.Id, HttpMethod.Put, dto).ConfigureAwait(false);
+            var result = await SendRequest<string>("/" + dto.Id, HttpMethod.Put, dto).ConfigureAwait(false);
             return result;
         }
 
         public static async Task<Result> Delete(long id)
         {
-            Result result = await SendRequest<string>("/" + id, HttpMethod.Delete).ConfigureAwait(false);
+            var result = await SendRequest<string>("/" + id, HttpMethod.Delete).ConfigureAwait(false);
             return result;
         }
 
@@ -52,8 +52,8 @@ namespace UI.Api
                 request.Content = new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
             }
 
-            HttpResponseMessage message = await _client.SendAsync(request).ConfigureAwait(false);
-            string response = await message.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var message = await _client.SendAsync(request).ConfigureAwait(false);
+            var response = await message.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             if (message.StatusCode == HttpStatusCode.InternalServerError)
                 throw new Exception(response);
